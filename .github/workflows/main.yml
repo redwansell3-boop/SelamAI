@@ -14,6 +14,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Unpack SelamAI.zip
+        run: |
+          if [ ! -f settings.gradle.kts ]; then
+            ZIP_FILE=$(ls SelamAI*.zip 2>/dev/null | head -n 1)
+            if [ -n "$ZIP_FILE" ]; then
+              unzip -o "$ZIP_FILE"
+              if [ -f SelamAI/settings.gradle.kts ]; then
+                cp -r SelamAI/. .
+              fi
+            fi
+          fi
+
       - name: Set up JDK 17 (Temurin)
         uses: actions/setup-java@v4
         with:
